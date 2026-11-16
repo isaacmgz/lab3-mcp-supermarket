@@ -79,6 +79,20 @@ Configuration through environment variables (see `.env.example`): `GEMINI_API_KE
 
 `gemini-2.5-flash` is no longer available to new API keys (it returns 404). Use `GEMINI_MODEL` to switch models without code changes. On the free tier, a single message can trigger several model calls, so bursts may hit the per-minute quota (HTTP 429). The UI then shows a "Try again" button.
 
+## Screenshots
+
+One customer message turns into seven chained MCP tool calls: open the order, three catalog searches, and three line additions. The chips above each reply show the calls in order.
+
+![Order flow](docs/screenshots/order-flow.png)
+
+A new customer is registered after an unknown-phone error. The server rejects a quantity above the 50-unit limit, and the assistant explains it. Failed calls are shown in red.
+
+![New customer and business rules](docs/screenshots/new-customer-and-rules.png)
+
+| Discovered tools panel | Cancellation with prior confirmation |
+|---|---|
+| ![Chat UI](docs/screenshots/chat-ui.png) | ![Cancel order](docs/screenshots/cancel-order.png) |
+
 ## Verify the MCP server without the chatbot
 
 ```bash
