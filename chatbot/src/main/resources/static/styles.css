@@ -471,6 +471,7 @@ body {
     padding: 10px 12px;
     max-height: 180px;
     min-height: 44px;
+    overflow-y: hidden;
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }

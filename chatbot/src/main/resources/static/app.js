@@ -153,6 +153,7 @@
     const autosize = () => {
         input.style.height = "auto";
         input.style.height = Math.min(input.scrollHeight, 180) + "px";
+        input.style.overflowY = input.scrollHeight > 180 ? "auto" : "hidden";
     };
 
     form.addEventListener("submit", (event) => {
