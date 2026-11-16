@@ -10,7 +10,7 @@ Built for *Laboratorio 3, Arquitectura de Software* (Universidad de Antioquia, 2
 flowchart LR
     user([Customer]) -->|natural language| ui[Chat UI<br/>HTML/CSS/JS]
     ui -->|REST /api/chat| bot[chatbot<br/>Spring Boot + Spring AI]
-    bot <-->|prompt + tool schemas| llm[(Gemini 2.5 Flash)]
+    bot <-->|prompt + tool schemas| llm[(Gemini 3.5 Flash)]
     bot -->|MCP JSON-RPC<br/>Streamable HTTP| mcp[mcp-server<br/>Spring Boot + Spring AI]
     other[Other MCP clients<br/>Claude Code / Desktop / Inspector] -->|MCP| mcp
     mcp -->|Spring Data JPA| db[(PostgreSQL 17)]
@@ -33,6 +33,8 @@ The server is organized by feature (`catalog`, `customers`, `orders`). The `mcp`
 5. The chatbot runs each call against the server with `tools/call`.
 6. The server dispatches the call to the `@Tool` method, which reads or writes PostgreSQL and returns JSON (or an error result).
 7. The results return to Gemini, which writes the final answer. The UI shows the answer plus the tools that were called.
+
+When a tool fails (for example, an unknown phone or a quantity above the limit), the server returns an MCP error result. The chatbot converts it into a JSON `{"error": "..."}` function response through a custom `ToolExecutionExceptionProcessor`. The Gemini connector requires JSON function responses, and the default plain-text error would abort the whole conversation.
 
 ## MCP tools
 
@@ -73,7 +75,9 @@ export GEMINI_API_KEY=your-key
 
 Demo customers: `3001234567` (Laura Gómez) and `3109876543` (Carlos Restrepo). You can also register a new customer in the chat.
 
-Configuration through environment variables (see `.env.example`): `GEMINI_API_KEY`, `GEMINI_MODEL` (default `gemini-2.5-flash`), `MCP_SERVER_URL` (default `http://localhost:8088`), `DB_URL`, `DB_USER`, `DB_PASSWORD`.
+Configuration through environment variables (see `.env.example`): `GEMINI_API_KEY`, `GEMINI_MODEL` (default `gemini-3.5-flash`), `MCP_SERVER_URL` (default `http://localhost:8088`), `DB_URL`, `DB_USER`, `DB_PASSWORD`.
+
+`gemini-2.5-flash` is no longer available to new API keys (it returns 404). Use `GEMINI_MODEL` to switch models without code changes. On the free tier, a single message can trigger several model calls, so bursts may hit the per-minute quota (HTTP 429). The UI then shows a "Try again" button.
 
 ## Verify the MCP server without the chatbot
 
