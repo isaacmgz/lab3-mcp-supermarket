@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MercaExpress Assistant</title>
+    <meta name="description" content="Chatbot that places supermarket home-delivery orders through an MCP server.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">
+        <span class="brand-mark" aria-hidden="true">🛒</span>
+        <div>
+            <h1>MercaExpress</h1>
+            <p>Grocery delivery assistant</p>
+        </div>
+    </div>
+    <div class="topbar-actions">
+        <button type="button" id="tools-toggle" class="btn btn-ghost tools-toggle" aria-controls="tools-panel" aria-expanded="false">Tools</button>
+        <button type="button" id="theme-toggle" class="btn btn-ghost btn-icon" aria-label="Toggle color theme">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+            </svg>
+        </button>
+        <button type="button" id="new-chat" class="btn btn-outline"><span class="label-long">New conversation</span><span class="label-short">New</span></button>
+    </div>
+</header>
+
+<div class="layout">
+    <main class="chat">
+        <section id="transcript" class="transcript" aria-live="polite" aria-label="Conversation">
+            <div id="empty-state" class="empty-state">
+                <h2>Hi! What do you need today?</h2>
+                <p>I can search the catalog, register you as a customer, build your order and schedule home delivery.</p>
+                <div class="suggestions">
+                    <button type="button" class="suggestion">I want to place a delivery order</button>
+                    <button type="button" class="suggestion">What product categories do you have?</button>
+                    <button type="button" class="suggestion">Show my recent orders</button>
+                </div>
+            </div>
+        </section>
+
+        <form id="composer" class="composer" autocomplete="off">
+            <label for="message" class="visually-hidden">Message</label>
+            <textarea id="message" rows="1" maxlength="2000" placeholder="Message MercaExpress" title="Enter sends, Shift+Enter adds a line"></textarea>
+            <button type="submit" id="send" class="btn btn-primary">Send</button>
+        </form>
+    </main>
+
+    <aside id="tools-panel" class="tools-panel" aria-label="MCP tools">
+        <div class="panel-head">
+            <h2>MCP tools</h2>
+            <span id="tools-status" class="badge">Loading</span>
+        </div>
+        <p class="panel-sub">Discovered at startup from <code>supermarket-mcp-server</code> over Streamable HTTP.</p>
+        <ul id="tools-list" class="tools-list"></ul>
+    </aside>
+</div>
+
+<script src="vendor/marked.umd.js"></script>
+<script src="vendor/purify.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
